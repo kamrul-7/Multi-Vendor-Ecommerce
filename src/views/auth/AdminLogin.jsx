@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
-import { admin_login } from '../../store/Reducers/authReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { admin_login } from '../../store/Reducers/authReducer'; // Assuming admin_login is your login action
 import { FiEye, FiEyeOff } from 'react-icons/fi'; // Eye icons
+
 const AdminLogin = () => {
-  const dispatch = useDispatch();
   // State for form inputs
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+
+  // Redux dispatch hook
+  const dispatch = useDispatch();
 
   // Handle form submit
   const handleSubmit = (e) => {
@@ -28,13 +31,24 @@ const AdminLogin = () => {
       email,
       password,
     };
-    // console.log('Form submitted successfully:', formData);
-    dispatch(admin_login(formData));
+
+    // Dispatch the login action
+    dispatch(admin_login(formData))
+      .then((response) => {
+        // Handle successful login response here
+        console.log('Login successful', response);
+      })
+      .catch((err) => {
+        // Handle error response here
+        console.error('Login failed', err);
+        setError('Login failed, please try again');
+      });
 
     // Reset form inputs after submission
     setEmail('');
     setPassword('');
   };
+
 
   return (
     <div className='fixed inset-0 bg-[#FCFCFC] flex justify-center items-center overflow-hidden px-4'>
